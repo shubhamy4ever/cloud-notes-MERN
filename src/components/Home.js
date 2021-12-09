@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Addnote } from "./Addnote";
 const host = "http://localhost:5000";
 export const notesContext = React.createContext();
-export default function Home() {
+export default function Home(props) {
   //this state is needed so that page will rerender without reloading when notes is added in notes array
   //otherwise if its simple array you will have to reload it
   const initialValue = [];
@@ -16,7 +16,7 @@ const [loading, setLoading] = useState(true);
       headers: {
         "Content-Type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFhYjUxZmRkY2RhZDFiNTQ5MWZjZmNlIn0sImlhdCI6MTYzODYxNzcwOH0.tJMnxgWDY6ccdZkZyYh1cyuvmPU1d7eIknAgT7Dky6M",
+          localStorage.getItem('token'),
       },
     });
     const fetchedNotes = await response.json();
@@ -32,7 +32,7 @@ const [loading, setLoading] = useState(true);
       headers: {
         "Content-Type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFhYjUxZmRkY2RhZDFiNTQ5MWZjZmNlIn0sImlhdCI6MTYzODYxNzcwOH0.tJMnxgWDY6ccdZkZyYh1cyuvmPU1d7eIknAgT7Dky6M",
+          localStorage.getItem('token'),
       },
       //post request and body of the request will have this json in string format with title desc ,tag
       body: JSON.stringify({ title, description, tag }),
@@ -42,18 +42,20 @@ const [loading, setLoading] = useState(true);
     // to display note which is added
     //concat beacause we dont want to update and keep only note which is added but also old notes
     setNotes(notes.concat(notefetched));
+    props.showAlert("added successfully", "success");
   };
 
   //delete note from id passed as parameter from clicked icon of delete on that particular note
   const deleteNote = async (id) => {
     //Api call
+    //eslint-disable-next-line
     const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
-      // eslint-disable-next-line
+     
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFhYjUxZmRkY2RhZDFiNTQ5MWZjZmNlIn0sImlhdCI6MTYzODYxNzcwOH0.tJMnxgWDY6ccdZkZyYh1cyuvmPU1d7eIknAgT7Dky6M",
+          localStorage.getItem('token'),
       },
     });
     //deleted from backend
@@ -65,15 +67,17 @@ const [loading, setLoading] = useState(true);
     });
     //directly because it will have all newnotes except deleted one
     setNotes(newNotes);
+    props.showAlert("Deleted successfully", "success");
   };
   const editNote = async (id, title, description, tag) => {
     //Api call
+     // eslint-disable-next-line
     const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFhYjUxZmRkY2RhZDFiNTQ5MWZjZmNlIn0sImlhdCI6MTYzODYxNzcwOH0.tJMnxgWDY6ccdZkZyYh1cyuvmPU1d7eIknAgT7Dky6M",
+          localStorage.getItem('token'),
       },
       body: JSON.stringify({title, description, tag}),
     });
@@ -93,6 +97,7 @@ const [loading, setLoading] = useState(true);
     }  
      //set state for updating frontend without reload
     setNotes(newNotes);
+    props.showAlert("updated successfully", "success");
    
   };
   return (
@@ -103,7 +108,7 @@ const [loading, setLoading] = useState(true);
       <notesContext.Provider
         value={{ notes, addNote, deleteNote, fetchnotes, editNote ,loading}}
       >
-        <Addnote />
+        <Addnote alert={props.alert}/>
       </notesContext.Provider>
     </>
   );

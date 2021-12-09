@@ -2,10 +2,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 var cors = require('cors')
-const mongooseUri =
-  "mongodb+srv://notes:DuLc2GgjKysBxyt@cluster0.s4dmk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const mongooseUri="mongodb+srv://notes:DuLc2GgjKysBxyt@cluster0.s4dmk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const port = 5000;
-
 
 
 //routes

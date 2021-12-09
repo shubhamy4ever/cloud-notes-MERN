@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import {useHistory} from "react-router-dom"
-export const Signup = () => {
+export const Signup = (props) => {
     const host="http://localhost:5000"
 const [credentials, setCredentials] = useState({name:"",email:"",password:"",confirmpassword:""});
 const onChange = (e)=>{
@@ -20,15 +20,16 @@ let history = useHistory();
             const json = await response.json();
             if(json.success===true){
                 history.push('/login');
-
+                props.showAlert("User created successfully,please login! ","success");
             }else{
-                alert("Error enter valid details");
+              props.showAlert("Invalid credentials","danger");
             }
     }
   return (
     <div>
+       <h2>Signup To Create Your Account</h2>
         <form onSubmit={onSubmit}>
-  <div className="mb-3">
+  <div className="mb-3 my-4">
     <label htmlFor="name" className="form-label" >Name</label>
     <input type="text" className="form-control" id="name" name="name" onChange={onChange}  aria-describedby="emailHelp" />
   </div>
@@ -47,7 +48,8 @@ let history = useHistory();
     <label htmlFor="confirmpassword" className="form-label" >Confirm Password</label>
     <input type="password" className="form-control" id="confirmpassword" minLength={5} name="confirmpassword" onChange={onChange}/>
   </div>
-  <button type="submit" className="btn btn-primary" disabled={credentials.password!==credentials.confirmpassword}>Submit</button>
+ { /* eslint-disable-next-line*/}
+  <button type="submit" className="btn btn-primary" disabled={credentials.password!==credentials.confirmpassword || credentials.name==""}>Submit</button>
 </form>
     </div>
   );

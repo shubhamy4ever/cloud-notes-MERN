@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Notes } from "./Notes";
 import { notesContext } from "./Home";
 
-export const Addnote = () => {
+export const Addnote = (props) => {
   //using context at home
   const {addNote} = useContext(notesContext);
   //state for rerendering without reload on webpage
@@ -78,7 +78,7 @@ export const Addnote = () => {
         </form>
       </div>
       <div className="container my-3">
-        <Notes />
+        <Notes alert={props.alert}/>
       </div>
     </div>
   );

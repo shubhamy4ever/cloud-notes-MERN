@@ -1,15 +1,24 @@
-import React, { useContext, useEffect, useState ,useRef} from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { NoteItem } from "./NoteItem";
 import { notesContext } from "./Home";
 import Loading from "./loading";
-
-export const Notes = () => {
-  const { notes, fetchnotes,editNote,loading } = useContext(notesContext);
+import {useHistory} from "react-router";
+export const Notes = (props) => {
+  const history = useHistory();
+  const { notes, fetchnotes, editNote, loading } = useContext(notesContext);
+  if(!localStorage.getItem("token")){
+ history.push("/login"); 
+  }
   useEffect(() => {
     fetchnotes();
     //eslint-disable-next-line
   }, []);
-  const [note, setNote] = useState({ id:"" ,title: "", description: "", tag: "" });
+  const [note, setNote] = useState({
+    id: "",
+    title: "",
+    description: "",
+    tag: "",
+  });
   //use ref to point at close after onclick is triggered that is note is updated
   const refClose = useRef(null);
   const updateNote = async (currentNote) => {
@@ -26,9 +35,9 @@ export const Notes = () => {
   };
   const handleClick = () => {
     // id title descr tag of that particular note which edit button is clicked taken from updateNote
-    //not passed argument as object 
-    editNote(note.id,note.title,note.description,note.tag);
-    //useref.current. event on which it will trigger 
+    //not passed argument as object
+    editNote(note.id, note.title, note.description, note.tag);
+    //useref.current. event on which it will trigger
     refClose.current.click();
   };
   return (
@@ -66,7 +75,6 @@ export const Notes = () => {
                   name="title"
                   onChange={onChange}
                   value={note.title}
-
                 />
               </div>
               <div className="mb-3">
@@ -81,7 +89,6 @@ export const Notes = () => {
                   name="description"
                   onChange={onChange}
                   value={note.description}
-                 
                 />
               </div>
               <div className="mb-3">
@@ -112,7 +119,7 @@ export const Notes = () => {
                 type="button"
                 className="btn btn-primary"
                 onClick={handleClick}
-                disabled={note.title.length<3||note.description.length<5}
+                disabled={note.title.length < 3 || note.description.length < 5}
               >
                 Update Note
               </button>
@@ -124,21 +131,23 @@ export const Notes = () => {
       <h2>Your Notes </h2>
       <p>
         <div className="row container my-3">
-        {loading && <Loading />}
-          {notes.length===0?"no notes to display ":notes.map((note) => {
-            return (
-              <NoteItem
-                key={note._id}
-                title={note.title}
-                description={note.description}
-                tag={note.tag}
-                id={note._id}
-                //passing whole note to get a particular clicked notes id for updating
-                note={note}
-                updateNote={updateNote}
-              />
-            );
-          })}
+          {loading && <Loading />}
+          {notes.length === 0
+            ? "no notes to display "
+            : notes.map((note) => {
+                return (
+                  <NoteItem
+                    key={note._id}
+                    title={note.title}
+                    description={note.description}
+                    tag={note.tag}
+                    id={note._id}
+                    //passing whole note to get a particular clicked notes id for updating
+                    note={note}
+                    updateNote={updateNote}
+                  />
+                );
+              })}
         </div>
       </p>
     </>

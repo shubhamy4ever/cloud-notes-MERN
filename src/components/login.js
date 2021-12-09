@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {useHistory} from 'react-router-dom'
-export const Login = () => {
+export const Login = (props) => {
     const host="http://localhost:5000"
 const [credentials, setCredentials] = useState({email:"",password:""});
 const onChange = (e)=>{
@@ -21,15 +21,17 @@ let history = useHistory();
             if(json.success===true){
                 localStorage.setItem("token",json.authtoken);
                 history.push('/');
+                props.showAlert("logged in successfully","success");
 
             }else{
-                alert("invalid credentials");
+                props.showAlert("Invalid credentials","danger");
             }
     }
     return (
         <div>
+          <h2>Login To Continue Cloud Notes</h2>
            <form onSubmit={onSubmit}>
-  <div class="mb-3">
+  <div class="mb-3 my-4">
     <label for="exampleInputEmail1" class="form-label" >Email address</label>
     <input type="email" class="form-control" id="exampleInputEmail1" name="email" onChange={onChange}  aria-describedby="emailHelp" />
   </div>
