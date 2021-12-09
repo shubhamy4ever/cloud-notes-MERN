@@ -1,3 +1,23 @@
+# Cloud-Notes
+
+This is cloud Notes website made using MERN Stack 
+
+# Screenshots:
+![Demo](DemoImages/1st.png)
+![Demo](DemoImages/2nd.png)
+![Demo](DemoImages/3rd.png)
+![Demo](DemoImages/4th.png)
+![Demo](DemoImages/5th.png)
+![Demo](DemoImages/6th.png)
+![Demo](DemoImages/7th.png)
+
+## 👋 Hi, To use this (you should know about MERN Stack):
+- npm install to install both dependencies of backend as well as frontend
+- add DB_CONNECTION=your cluster from mongo db atlas link and your own JWT_Secret for jwt ( in .env)
+- and then do npm start from both backend as well as frontend
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
